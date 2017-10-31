@@ -11,7 +11,7 @@ const userSchema = mongoose.Schema({
 userSchema.methods.toClient = function() {
   return {
     id: this._id,
-    createdDate: this.createdDate,
+    createdDate: new Date(),
     name: this.name,
     img: this.img,
     socialLinks: this.socialLinks
@@ -19,4 +19,5 @@ userSchema.methods.toClient = function() {
 };
 
 const user = mongoose.model('user', userSchema);
+
 module.exports = user;

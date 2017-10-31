@@ -14,7 +14,7 @@ const videoSchema = mongoose.Schema({
 videoSchema.methods.toClient = function() {
   return {
     id: this._id,
-    createdDate: this.createdDate,
+    createdDate: new Date(),
     title: this.title,
     description: this.description,
     youtubeUrl: this.youtubeUrl,
@@ -26,4 +26,5 @@ videoSchema.methods.toClient = function() {
 };
 
 const video = mongoose.model('video', videoSchema);
+
 module.exports = video;

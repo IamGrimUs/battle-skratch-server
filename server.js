@@ -10,13 +10,13 @@ mongoose.Promise = global.Promise;
 
 app.use(express.static('public'));
 
-app.use('/user', userRouter);
+app.use('/api/user', userRouter);
 
 let server;
 
-app.get('/', (req, res) => {
-  res.status(200).sendFile(__dirname + '/public/index.html');
-});
+// app.get('/', (req, res) => {
+//   res.status(200).sendFile(__dirname + '/public/index.html');
+// });
 
 function runServer(databaseUrl = DATABASE_URL, port = PORT) {
   return new Promise((resolve, reject) => {
