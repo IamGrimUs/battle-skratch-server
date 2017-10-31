@@ -1,6 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const userRouter = require('./app/user/user.routes');
+const userRouter = require('./app/user/userRoutes');
 
 const { PORT, DATABASE_URL } = require('./config');
 

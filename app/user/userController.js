@@ -1,4 +1,4 @@
-const userModel = require('./user.model');
+const userModel = require('./userModel');
 
 const findAllUsers = (req, res) => {
   console.log('well hello there');

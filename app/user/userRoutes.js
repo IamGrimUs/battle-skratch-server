@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 
-const userController = require('./user.controller');
+const userController = require('./userController');
 const router = express.Router();
 
 router.use(bodyParser.json());
