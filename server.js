@@ -1,22 +1,25 @@
+const bodyParser = require('body-parser');
 const express = require('express');
 const mongoose = require('mongoose');
 const userRouter = require('./app/user/userRoutes');
+
+mongoose.Promise = global.Promise;
 
 const { PORT, DATABASE_URL } = require('./config');
 
 const app = express();
 
-mongoose.Promise = global.Promise;
+app.use(bodyParser.json());
 
 app.use(express.static('public'));
 
 app.use('/api/user', userRouter);
 
-let server;
-
 // app.get('/', (req, res) => {
 //   res.status(200).sendFile(__dirname + '/public/index.html');
 // });
+
+let server;
 
 function runServer(databaseUrl = DATABASE_URL, port = PORT) {
   return new Promise((resolve, reject) => {
