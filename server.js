@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const cors = require('cors');
 const userRouter = require('./app/user/userRoutes');
 
 const { PORT, DATABASE_URL } = require('./config');
@@ -9,6 +10,8 @@ const app = express();
 mongoose.Promise = global.Promise;
 
 app.use(express.static('public'));
+
+app.use(cors());
 
 app.use('/api/user', userRouter);
 
