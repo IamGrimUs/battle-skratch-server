@@ -1,21 +1,17 @@
 const mongooose = require('mongoose');
 
 const beatSchema = mongoose.Schema({
-  createdDate: { type: Date },
   url: { type: String, required: true },
   producer: { type: String, required: true },
-  title: { type: String, required: true },
-  description: { type: String }
+  title: { type: String, required: true }
 });
 
 beatSchema.methods.toClient = function() {
   return {
     id: this._id,
-    cratedDate: this.createdDate,
     url: this.url,
     producer: this.producer,
-    title: this.title,
-    description: this.description
+    title: this.title
   };
 };
 

@@ -1,20 +1,24 @@
 const mongoose = require('mongoose');
 
 const userSchema = mongoose.Schema({
-  createdDate: { type: Date },
   isAdmin: { type: Boolean },
   name: { type: String, required: true },
   img: { type: String },
-  socialLinks: [{ name: String, url: String }]
+  battlesEntered: { type: Number },
+  battlesWon: { type: Number },
+  grandChampion: { type: Boolean },
+  currentChampion: { type: Boolean }
 });
 
 userSchema.methods.toClient = function() {
   return {
     id: this._id,
-    createdDate: new Date(),
     name: this.name,
     img: this.img,
-    socialLinks: this.socialLinks
+    battlesEntered: this.battlesEntered,
+    battlesWon: this.battlesWon,
+    grandChampion: this.grandChampion,
+    currentChampion: this.currentChampion
   };
 };
 

@@ -1,27 +1,25 @@
 const mongoose = require('mongoose');
 
 const battleSchema = mongoose.Schema({
-  cratedDate: { type: Date },
   startDate: { type: Date },
   endDate: { type: Date },
+  beatId: { type: String },
   videoIds: [{ videoId: String }],
-  battleTypeId: { type: String },
-  beatUrl: { type: String },
   participants: [{ userId: String }],
-  champion: { type: String }
+  champion: { userId: String },
+  battleTypeId: { type: String }
 });
 
 battleSchema.methods.toClient = function() {
   return {
     id: this._id,
-    createdDate: this.createdDate,
     startDate: this.startDate,
     endDate: this.endDate,
+    beatId: this.beatId,
     videoIds: this.videoIds,
-    battleTypeId: this.battleTypeId,
-    beatUrl: this.beatUrl,
     participants: this.participants,
-    champion: this.champion
+    champion: this.champion,
+    battleTypeId: this.battleTypeId
   };
 };
 
