@@ -14,4 +14,4 @@ battleTypesSchema.methods.toClient = function() {
 };
 
 const battleType = mongoose.model('battleType', battleTypesSchema);
-module.export = battleType;
+module.exports = battleType;

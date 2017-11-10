@@ -1,6 +1,8 @@
+const ObjectId = require('mongodb');
 const userModel = require('./userModel');
 const videoModel = require('../video/videoModel');
 const battleModel = require('../battle/battleModel');
+const battleTypeModel = require('../battleType/battleTypeModel');
 
 const findAllUsers = (req, res) => {
   userModel
@@ -25,10 +27,13 @@ const findAllChampions = async (req, res) => {
     if (grandChampion) response.grandChampion = grandChampion.toClient();
     if (currentChampion) response.currentChampion = currentChampion.toClient();
 
+    response.currentChampion.battleTypeDescription =
+      currentChampion.battleTypeDescription;
+
     res.status(200).json(response);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: 'Internal server error' });
+    res.status(500).json({ message: 'Internal server error: ' + err.message });
   }
 };
 
@@ -42,16 +47,20 @@ const findGrandChampion = async () => {
 };
 
 const findCurrentChampion = async () => {
-  const battle = await battleModel.find({
+  const battles = await battleModel.find({
     startDate: { $lte: new Date() },
     endDate: { $gte: new Date() }
   });
-  console.log('battle', battle);
+  const battle = battles[0];
+  if (!battle) throw new Error('No battle found');
+
   const videos = await videoModel
     .find({
       $and: [
         {
-          createdDate: { $gte: battle.startDate }
+          createdDate: {
+            $gte: battle.startDate
+          }
         },
         {
           createdDate: { $lte: battle.endDate }
@@ -63,6 +72,8 @@ const findCurrentChampion = async () => {
   console.log('videos', videos);
   const userId = videos[0].userId;
   const currentChampion = await userModel.findById(userId);
+  const battleType = await battleTypeModel.findById(battle.battleTypeId);
+  currentChampion.battleTypeDescription = battleType.description;
   return currentChampion;
 };
 

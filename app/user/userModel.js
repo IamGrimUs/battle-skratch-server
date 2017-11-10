@@ -5,9 +5,7 @@ const userSchema = mongoose.Schema({
   name: { type: String, required: true },
   img: { type: String },
   battlesEntered: { type: Number },
-  battlesWon: { type: Number },
-  grandChampion: { type: Boolean },
-  currentChampion: { type: Boolean }
+  battlesWon: { type: Number }
 });
 
 userSchema.methods.toClient = function() {
@@ -16,9 +14,7 @@ userSchema.methods.toClient = function() {
     name: this.name,
     img: this.img,
     battlesEntered: this.battlesEntered,
-    battlesWon: this.battlesWon,
-    grandChampion: this.grandChampion,
-    currentChampion: this.currentChampion
+    battlesWon: this.battlesWon
   };
 };
 
