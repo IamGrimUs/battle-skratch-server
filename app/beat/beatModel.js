@@ -1,4 +1,4 @@
-const mongooose = require('mongoose');
+const mongoose = require('mongoose');
 
 const beatSchema = mongoose.Schema({
   url: { type: String, required: true },

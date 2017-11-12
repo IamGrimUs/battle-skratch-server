@@ -2,6 +2,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const userRouter = require('./app/user/userRoutes');
+const videoRouter = require('./app/video/videoRoutes');
+const battleRouter = require('./app/battle/battleRoutes');
 
 const { PORT, DATABASE_URL } = require('./config');
 
@@ -13,6 +15,8 @@ app.use(express.static('public'));
 
 app.use(cors());
 
+app.use('/api/battle', battleRouter);
+app.use('/api/video', videoRouter);
 app.use('/api/user', userRouter);
 
 let server;
