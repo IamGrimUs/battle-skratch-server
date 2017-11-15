@@ -3,18 +3,20 @@ const mongoose = require('mongoose');
 const videoSchema = mongoose.Schema({
   title: { type: String },
   createdDate: { type: Date, default: new Date() },
+  battleIds: Array,
   videoLink: { type: String },
   videoImgLink: { type: String },
   userId: { type: String },
   voteCountUp: { type: Number },
   voteCountDown: { type: Number },
-  comments: [{ author: String, comment: String, createdDate: Date }]
+  comments: Array
 });
 
 videoSchema.methods.toClient = function() {
   return {
     id: this._id,
     createdDate: this.createdDate,
+    battleIds: this.battleIds,
     title: this.title,
     videoLink: this.videoLink,
     videoImgLink: this.videoImgLink,

@@ -2,15 +2,17 @@ const ObjectId = require('mongodb');
 const battleModel = require('./battleModel');
 const beatModel = require('../beat/beatModel');
 const battleTypeModel = require('../battleType/battleTypeModel');
+const videoModel = require('../video/videoModel');
 
 const findAllBattles = async (req, res) => {
   try {
     const battles = await findBattle();
     const battlesList = battles.map(battle => battle.toClient());
+
     const battleTypes = [];
 
     for (let i = 0; i < battlesList.length; i++) {
-      battleType = await findBattleType(battlesList[i].battleTypeId);
+      const battleType = await findBattleType(battlesList[i].battleTypeId);
       battleTypes.push(battleType.toClient());
     }
 
@@ -42,7 +44,6 @@ const findBeat = async beatId => {
 
 const findCurrentBattle = async (req, res) => {
   try {
-    // console.log('findCurrentBattle is running...');
     const currentBattles = await battleModel.find({
       startDate: { $lte: new Date() },
       endDate: { $gte: new Date() }

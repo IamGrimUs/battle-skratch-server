@@ -4,8 +4,8 @@ const battleSchema = mongoose.Schema({
   startDate: { type: Date },
   endDate: { type: Date },
   beatId: { type: String },
-  videoIds: [{ videoId: String }],
-  participants: [{ userId: String }],
+  videoIds: Array,
+  participants: Array,
   champion: { userId: String },
   battleTypeId: { type: String }
 });

@@ -9,6 +9,7 @@ router.use(bodyParser.urlencoded({ extended: false }));
 
 router.get('/', userController.findAllUsers);
 router.get('/champions', userController.findAllChampions);
+router.get('/:userId', userController.findUserById);
 
 // router.get('/:userId', userController.findUserById);
 // router.post('/', userController.createNewUser);

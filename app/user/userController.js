@@ -18,6 +18,19 @@ const findAllUsers = (req, res) => {
     });
 };
 
+const findUserById = (req, res) => {
+  const userId = req.params.userId;
+  userModel
+    .findById(userId)
+    .then(async user => {
+      res.json(await user.toClient());
+    })
+    .catch(err => {
+      console.error(err);
+      res.status(500).json({ message: 'Internal server error' });
+    });
+};
+
 const findAllChampions = async (req, res) => {
   try {
     const grandChampion = await findGrandChampion();
@@ -78,5 +91,6 @@ const findCurrentChampion = async () => {
 
 module.exports = {
   findAllUsers,
-  findAllChampions
+  findAllChampions,
+  findUserById
 };

@@ -15,14 +15,12 @@ const findAllVideos = (req, res) => {
     });
 };
 
-const findComments = async (req, res) => {
-  // console.log('find all comments is now running');
+const findVideoById = (req, res) => {
+  const videoId = req.params.videoId;
   videoModel
-    .find()
-    .then(videos => {
-      res.status(200).json({
-        videos: video.map(video => video.toClient())
-      });
+    .findById(videoId)
+    .then(async video => {
+      res.json(await video.toClient());
     })
     .catch(err => {
       console.error(err);
@@ -30,7 +28,28 @@ const findComments = async (req, res) => {
     });
 };
 
+// findVideoById = async (req, res) => {
+//   const videos = await videoModel.findById(videoId);
+//   return videos;
+// };
+
+const findComments = async (req, res) => {
+  console.log('find all comments is now running');
+  // videoModel
+  //   .find()
+  //   .then(videos => {
+  //     res.status(200).json({
+  //       videos: video.map(video => video.toClient())
+  //     });
+  //   })
+  //   .catch(err => {
+  //     console.error(err);
+  //     res.status(500).json({ message: 'Internal server error' });
+  //   });
+};
+
 module.exports = {
   findAllVideos,
+  findVideoById,
   findComments
 };
