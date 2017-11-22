@@ -32,15 +32,18 @@ const findVideoById = (req, res) => {
 
 const updateComments = (req, res) => {
   const videoId = req.params.videoId;
-  const author = req.params.author;
-  const comment = req.params.comment;
+  const comment = req.body.comment;
+  const author = req.body.author;
+  console.log(req.body.author, req.body.comment, req.body.videoId);
   videoModel
     .findByIdAndUpdate(videoId, {
-      $push: { comments: { author, comment } }
+      $push: {
+        comments: { comment, author }
+      }
     })
-    .then(() => res.status(204).end())
+    .then(() => res.status(200).end())
     .catch(err => {
-      console.error(err);
+      console.log(err);
       res.status(500).json({ message: 'Internal server error' });
     });
 };
@@ -49,7 +52,7 @@ const updateVoteCountUpById = (req, res) => {
   const videoId = req.params.videoId;
   videoModel
     .findByIdAndUpdate(videoId, { $inc: { voteCountUp: 1 } })
-    .then(() => res.status(204).end())
+    .then(() => res.status(200).end())
     .catch(err => {
       console.log(err);
       res.status(500).json({ message: 'Internal server error' });
