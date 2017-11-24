@@ -2,7 +2,6 @@ const ObjectId = require('mongodb');
 const battleModel = require('./battleModel');
 const beatModel = require('../beat/beatModel');
 const battleTypeModel = require('../battleType/battleTypeModel');
-const videoModel = require('../video/videoModel');
 
 const findAllBattles = async (req, res) => {
   try {
