@@ -1,5 +1,6 @@
 const ObjectId = require('mongodb');
 const videoModel = require('../video/videoModel');
+const battleModel = require('../battle/battleModel');
 
 const findAllVideos = (req, res) => {
   videoModel
@@ -28,6 +29,57 @@ const findVideoById = (req, res) => {
       console.error(err);
       res.status(500).json({ message: 'Internal server error' });
     });
+};
+
+const createVideoSubmission = async (req, res) => {
+  try {
+    const data = {
+      currentBattleId: req.params.currentBattleId,
+      userId: req.body.userId,
+      title: req.body.title,
+      videoLink: req.body.videoLink
+    };
+    const video = await createVideo(data);
+    // console.log('data', data.battleIds);
+    // console.log('video id', video._id);
+    await addVideoToBattle(data.currentBattleId, video._id.toString());
+    return res.status(201).json(video.toClient());
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Internal server error: ' + err.message });
+  }
+};
+
+const createVideo = async data => {
+  try {
+    const newVideo = await videoModel.create({
+      createdDate: new Date(),
+      battleIds: [data.currentBattleId],
+      title: data.title,
+      videoLink: data.videoLink,
+      userId: data.userId,
+      voteCountUp: 0,
+      voteCountDown: 0,
+      comments: []
+    });
+    return newVideo;
+  } catch (err) {
+    console.error('err is ->', err);
+    throw new Error(err.message);
+  }
+};
+
+const addVideoToBattle = async (battleId, videoId) => {
+  console.log(videoId, battleId);
+  try {
+    await battleModel.findByIdAndUpdate(battleId, {
+      $push: {
+        videoIds: { id: videoId }
+      }
+    });
+  } catch (err) {
+    throw new Error(err.message);
+  }
 };
 
 const updateComments = (req, res) => {
@@ -73,6 +125,7 @@ const updateVoteCountDownById = (req, res) => {
 module.exports = {
   findAllVideos,
   findVideoById,
+  createVideoSubmission,
   updateComments,
   updateVoteCountUpById,
   updateVoteCountDownById

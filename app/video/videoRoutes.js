@@ -12,8 +12,7 @@ router.get('/', videoController.findAllVideos);
 router.get('/:videoId/', videoController.findVideoById);
 router.put('/voteCountUp/:videoId', videoController.updateVoteCountUpById);
 router.put('/voteCountDown/:videoId', videoController.updateVoteCountDownById);
-// router.put('/:videoId/:author/:comment/', videoController.updateComments);
 router.put('/:videoId/', videoController.updateComments);
-// router.get('/submissionVideos', videoController.findVideoById);
+router.post('/:currentBattleId', videoController.createVideoSubmission);
 
 module.exports = router;
