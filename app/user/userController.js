@@ -1,4 +1,3 @@
-const ObjectId = require('mongodb');
 const userModel = require('./userModel');
 const videoModel = require('../video/videoModel');
 const battleModel = require('../battle/battleModel');

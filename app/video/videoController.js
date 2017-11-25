@@ -40,9 +40,11 @@ const createVideoSubmission = async (req, res) => {
       videoLink: req.body.videoLink
     };
     const video = await createVideo(data);
-    // console.log('data', data.battleIds);
-    // console.log('video id', video._id);
-    await addVideoToBattle(data.currentBattleId, video._id.toString());
+    await addVideoToBattle(
+      data.currentBattleId,
+      video._id.toString(),
+      data.userId
+    );
     return res.status(201).json(video.toClient());
   } catch (err) {
     console.error(err);
@@ -69,12 +71,12 @@ const createVideo = async data => {
   }
 };
 
-const addVideoToBattle = async (battleId, videoId) => {
-  console.log(videoId, battleId);
+const addVideoToBattle = async (battleId, videoId, userId) => {
   try {
     await battleModel.findByIdAndUpdate(battleId, {
       $push: {
-        videoIds: { id: videoId }
+        videoIds: { id: videoId },
+        participants: { userId: userId }
       }
     });
   } catch (err) {
@@ -86,7 +88,6 @@ const updateComments = (req, res) => {
   const videoId = req.params.videoId;
   const comment = req.body.comment;
   const author = req.body.author;
-  console.log(req.body.author, req.body.comment, req.body.videoId);
   videoModel
     .findByIdAndUpdate(videoId, {
       $push: {
