@@ -1,30 +1,42 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const passport = require('passport');
 const cors = require('cors');
+
 const userRouter = require('./app/user/userRoutes');
 const videoRouter = require('./app/video/videoRoutes');
 const battleRouter = require('./app/battle/battleRoutes');
+const authRouter = require('./app/auth/authRoutes');
 
 const { PORT, DATABASE_URL } = require('./config');
+const { jwtStrategy } = require('./app/auth/authStrategies');
 
 const app = express();
 
 mongoose.Promise = global.Promise;
 
-app.use(express.static('public'));
+// CORS
+app.use(function(req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Content-Type,Authorization');
+  res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,DELETE');
+  if (req.method === 'OPTIONS') {
+    return res.send(204);
+  }
+  next();
+});
 
+app.use(express.static('public'));
 app.use(cors());
+app.use(passport.initialize());
+passport.use(jwtStrategy);
 
 app.use('/api/battle', battleRouter);
 app.use('/api/video', videoRouter);
 app.use('/api/user', userRouter);
+app.use('/auth', authRouter);
 
 let server;
-
-// app.get('/', (req, res) => {
-//   res.status(200).sendFile(__dirname + '/public/index.html');
-// });
-
 function runServer(databaseUrl = DATABASE_URL, port = PORT) {
   let promise = new Promise((resolve, reject) => {
     mongoose.connect(databaseUrl, err => {
