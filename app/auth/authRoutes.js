@@ -3,7 +3,7 @@ const passport = require('passport');
 const jwt = require('jsonwebtoken');
 const bodyParser = require('body-parser');
 
-const User = require('../user/user.model');
+const User = require('../user/userModel');
 const config = require('../../config');
 const router = express.Router();
 
@@ -12,7 +12,7 @@ router.use(bodyParser.urlencoded({ extended: false }));
 
 const createAuthToken = user => {
   return jwt.sign({ user }, config.JWT_SECRET, {
-    subject: user.username,
+    subject: user.name,
     expiresIn: config.JWT_EXPIRY,
     algorithm: 'HS256'
   });
@@ -20,7 +20,7 @@ const createAuthToken = user => {
 
 router.post('/login', (req, res) => {
   const userName = req.body.userName;
-  const userPassword = req.body.userPassword;
+  const userPassword = req.body.password;
   User.findOne({ name: userName })
     .then(async user => {
       if (!user) {
@@ -35,7 +35,6 @@ router.post('/login', (req, res) => {
       };
     })
     .then(result => {
-      //console.log(result);
       if (!result.isValid) {
         return Promise.reject({
           reason: 'LoginError',
@@ -43,10 +42,12 @@ router.post('/login', (req, res) => {
         });
       }
       const authToken = createAuthToken(result.user.toClient());
+      console.log('auth token', authToken);
+      console.log('user id', result.user._id);
       res.status(200).json({
         meta: 'success',
         userId: result.user._id,
-        permission: result.user.permission,
+        permission: result.user.isAdmin,
         authToken
       });
     })

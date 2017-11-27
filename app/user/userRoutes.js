@@ -9,20 +9,12 @@ const router = express.Router();
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: false }));
 
-router.get(
-  '/',
-  passport.authenticate('jwt', { session: false }),
-  userController.findAllUsers
-);
-router.get(
-  '/champions',
-  passport.authenticate('jwt', { session: false }),
-  userController.findAllChampions
-);
-router.get(
-  '/:userId',
-  passport.authenticate('jwt', { session: false }),
-  userController.findUserById
-);
+// passport.authenticate('jwt', { session: false }),
+
+router.get('/', userController.findAllUsers);
+
+router.get('/champions', userController.findAllChampions);
+
+router.get('/:userId', userController.findUserById);
 
 module.exports = router;
