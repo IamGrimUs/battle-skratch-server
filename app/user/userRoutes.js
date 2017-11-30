@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+
 const passport = require('passport');
 const { jwtStrategy } = require('../auth/authStrategies');
 
@@ -9,12 +10,22 @@ const router = express.Router();
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: false }));
 
-// passport.authenticate('jwt', { session: false }),
+router.get(
+  '/',
+  passport.authenticate('jwt', { session: false }),
+  userController.findAllUsers
+);
 
-router.get('/', userController.findAllUsers);
+router.get(
+  '/champions',
+  passport.authenticate('jwt', { session: false }),
+  userController.findAllChampions
+);
 
-router.get('/champions', userController.findAllChampions);
-
-router.get('/:userId', userController.findUserById);
+router.get(
+  '/:userId',
+  passport.authenticate('jwt', { session: false }),
+  userController.findUserById
+);
 
 module.exports = router;
