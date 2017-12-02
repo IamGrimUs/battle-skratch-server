@@ -1,3 +1,4 @@
+// const moment = require('moment');
 const userModel = require('./userModel');
 const videoModel = require('../video/videoModel');
 const battleModel = require('../battle/battleModel');
@@ -59,13 +60,15 @@ const findGrandChampion = async () => {
 };
 
 const findCurrentChampion = async () => {
-  const battles = await battleModel.find({
-    startDate: { $lte: new Date() },
-    endDate: { $gte: new Date() }
-  });
+  // const battles = await battleModel.find({
+  //   startDate: { $lte: new Date() },
+  //   endDate: { $gte: new Date() }
+  // });
+  const battles = await battleModel.find();
   const battle = battles[0];
   if (!battle) throw new Error('No battle found');
-
+  console.log('start', battle.startDate);
+  console.log('end', battle.endDate);
   const videos = await videoModel
     .find({
       $and: [

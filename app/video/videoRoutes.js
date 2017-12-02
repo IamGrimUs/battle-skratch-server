@@ -31,11 +31,7 @@ router.put(
   passport.authenticate('jwt', { session: false }),
   videoController.updateVoteCountDownById
 );
-router.put(
-  '/:videoId/',
-  passport.authenticate('jwt', { session: false }),
-  videoController.updateComments
-);
+router.put('/:videoId/', videoController.updateComments);
 router.post(
   '/:currentBattleId',
   passport.authenticate('jwt', { session: false }),

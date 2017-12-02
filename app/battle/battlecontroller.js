@@ -1,4 +1,5 @@
 const ObjectId = require('mongodb');
+
 const battleModel = require('./battleModel');
 const beatModel = require('../beat/beatModel');
 const battleTypeModel = require('../battleType/battleTypeModel');
@@ -47,6 +48,9 @@ const findCurrentBattle = async (req, res) => {
       startDate: { $lte: new Date() },
       endDate: { $gte: new Date() }
     });
+    // const currentBattles = await battleModel.find();
+    console.log(currentBattles);
+    console.log(new Date());
     const currentBattle = currentBattles[0].toClient();
     const beat = await findBeat(currentBattle.beatId);
     currentBattle.beatId = beat;

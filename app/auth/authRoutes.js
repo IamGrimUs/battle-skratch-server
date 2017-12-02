@@ -42,8 +42,6 @@ router.post('/login', (req, res) => {
         });
       }
       const authToken = createAuthToken(result.user.toClient());
-      console.log('auth token', authToken);
-      console.log('user id', result.user._id);
       res.status(200).json({
         meta: 'success',
         userId: result.user._id,
