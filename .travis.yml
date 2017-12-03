@@ -1,0 +1,10 @@
+language: node_js
+node_js: node
+services: mongodb
+deploy:
+  provider: heroku
+  # api_key:
+  #   secure: b9Ke53tLmUDSGFpMgBRfQQ3eivkkOaqc9+Ir/Wzg04SGsghfCQS8DSG3krAJEaa4TcmxIgjsXIt67xQpS9VgUvBYCQcLR96X6XmlG3jShA6xkBFTG92eZDWOBRVCdqbih0Edr3QGVBxPo27br7IMbYAs2LXJzb2jQRPMEqTMGjdPOhEOPOIDcFkhlzT+CWlx7SnrvRcYfqDST1/zXUovin2WrXt/lcKinlabckPxjuvqjP49StlLyOIFR391ZqVgZQMMrBJ2DfjPyRHT/eBPTbY5nvAXDMB6oJENNnl8IIF5ZW8YCBNDLPMonYLn/PdGmwUdgh0OfpKir3gio/Hq/w3mhB++shZ7KnNEbKDzQUAtVPDD4xDttL5Rgl5/vGT1vOURaXSH2QftRewEcAVfy7MRyaP8FfUeG7JAI4ICRsmaw9/WFOZEAzGEq774zUMybcAPXbSFZkbVkw5eoSm8bC+TNfURo5ZaGdVpxGaI/KYhnC3UBRk4qQDuHXyU2b8Al/NWyyj9nz9F6n8fjLZQWSO4bISrPYt9ozKodgMjFZdyByOxrNr/o3L0s/2WFUFvt2SOPWQ4H0nNaCiGWzW4Kaj18SRhrJJGGF5V+7dtHToJKUFBO4bB5fLYKiDTQx/iTM3o0i+pavS0K1yTteDnc86Zd5/dqWXrraP580Drgac=
+  app: battle-skratch-server
+  on:
+    repo: IamGrimUs/battle-skratch-server
