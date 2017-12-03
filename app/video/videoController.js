@@ -56,7 +56,7 @@ const createVideo = async data => {
   try {
     const newVideo = await videoModel.create({
       createdDate: new Date(),
-      battleIds: [data.currentBattleId],
+      battleIds: [{ id: data.currentBattleId }],
       title: data.title,
       videoLink: data.videoLink,
       userId: data.userId,
