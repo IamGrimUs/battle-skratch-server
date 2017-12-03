@@ -60,15 +60,13 @@ const findGrandChampion = async () => {
 };
 
 const findCurrentChampion = async () => {
-  // const battles = await battleModel.find({
-  //   startDate: { $lte: new Date() },
-  //   endDate: { $gte: new Date() }
-  // });
-  const battles = await battleModel.find();
+  const battles = await battleModel.find({
+    startDate: { $lte: new Date() },
+    endDate: { $gte: new Date() }
+  });
   const battle = battles[0];
+  // console.log('please show battle ->', battle);
   if (!battle) throw new Error('No battle found');
-  console.log('start', battle.startDate);
-  console.log('end', battle.endDate);
   const videos = await videoModel
     .find({
       $and: [

@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const moment = require('moment');
 
 const battleSchema = mongoose.Schema({
-  startDate: { type: Date },
+  startDate: { type: Date, default: new Date() },
   endDate: { type: Date },
   beatId: { type: String },
   videoIds: Array,

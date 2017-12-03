@@ -3,11 +3,11 @@ const mongoose = require('mongoose');
 const videoSchema = mongoose.Schema({
   createdDate: { type: Date, default: new Date() },
   battleIds: Array,
-  title: { type: String },
-  videoLink: { type: String },
-  userId: { type: String },
-  voteCountUp: { type: Number },
-  voteCountDown: { type: Number },
+  title: String,
+  videoLink: String,
+  userId: String,
+  voteCountUp: Number,
+  voteCountDown: Number,
   comments: Array
 });
 
