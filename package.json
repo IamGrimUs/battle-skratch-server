@@ -23,6 +23,7 @@
     "body-parser": "^1.18.2",
     "cors": "^2.8.4",
     "express": "^4.16.2",
+    "faker": "^4.1.0",
     "js-cookie": "^2.2.0",
     "jsonwebtoken": "^8.1.0",
     "moment": "^2.19.3",
@@ -33,5 +34,10 @@
     "passport-jwt": "^3.0.1",
     "passport-local": "^1.0.0",
     "password-hash-and-salt": "^0.1.4"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "chai-http": "^3.0.0",
+    "mocha": "^4.0.1"
   }
 }
