@@ -3,6 +3,19 @@
 A node application built to handle api request for the Battle Skratch react web
 application.
 
+# Getting started
+
+> git clone https://github.com/IamGrimUs/battle-skratch-server cd
+> battle-skratch-server npm install
+
+# Launching
+
+> npm start
+
+# Testing
+
+> coming soon
+
 ## Built With
 
 * [MongoDB]
@@ -10,6 +23,11 @@ application.
 * [Node.js]
 * [Mocha]
 * [Chai]
+
+# Security
+
+* User passwords are encrypted using bcrypt.js.
+* Passport is used to control endpoints from unauthorized users.
 
 ## Authors
 

@@ -13,7 +13,6 @@ userSchema.methods.toClient = function() {
   return {
     id: this._id,
     name: this.name,
-    img: this.img,
     battlesEntered: this.battlesEntered,
     battlesWon: this.battlesWon
   };

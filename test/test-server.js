@@ -1,71 +1,130 @@
-// const chai = require('chai');
-// const chaiHttp = require('chai-http');
-// const faker = require('faker');
+const chai = require('chai');
+const chaiHttp = require('chai-http');
+const faker = require('faker');
 
-// const mongoose = require('mongoose');
+const mongoose = require('mongoose');
 
-// const should = chai.should();
-// const jwt = require('jsonwebtoken');
+const should = chai.should();
+const jwt = require('jsonwebtoken');
 
 // const server = require('../server');
-// const { runServer, closeServer } = require('../server');
-// const Department = require('../app/department/department.model');
-// const User = require('../app/user/user.model');
-// const { TEST_DATABASE_URL } = require('../config');
-// const config = require('../config');
+const { runServer, closeServer, app } = require('../server');
 
-// const app = server.app;
+const User = require('../app/user/userModel');
+const { TEST_DATABASE_URL } = require('../config');
+const config = require('../config');
 
-// const createAuthToken = user => {
-//   return jwt.sign({ user }, config.JWT_SECRET, {
-//     subject: user.username,
-//     expiresIn: config.JWT_EXPIRY,
-//     algorithm: 'HS256'
-//   });
-// };
+// const app = server;
 
-// chai.use(chaiHttp);
+const createAuthToken = user => {
+  return jwt.sign({ user }, config.JWT_SECRET, {
+    subject: user.name,
+    expiresIn: config.JWT_EXPIRY,
+    algorithm: 'HS256'
+  });
+};
 
-// // used to generate data for db
-// function seedUserData() {
-//   const seedData = [];
+chai.use(chaiHttp);
 
-//   for (let i = 1; i <= 5; i++) {
-//     seedData.push(generateUserData());
-//   }
+// used to generate data for db
+function seedUserData() {
+  const seedData = [];
 
-//   return User.insertMany(seedData);
-// }
+  for (let i = 1; i <= 5; i++) {
+    seedData.push(generateUserData());
+  }
 
-// function generateUserData() {
-//   return {
-//     isAdmin: false,
-//     name: faker.name.firstName(),
-//     biography: faker.lorem.sentences(),
-//     password: 'password',
-//     battlesEntered: 0,
-//     battlesWon: 0
-//   };
-// }
+  return User.insertMany(seedData);
+}
 
-// function seedBattleData() {
-//   const seedData = [];
-//   seedData.push(generateBattleData());
-//   return Battle.insert(seedData);
-// }
+function generateUserData() {
+  return {
+    isAdmin: false,
+    name: faker.name.firstName(),
+    biography: faker.lorem.sentences(),
+    password: 'password',
+    battlesEntered: 0,
+    battlesWon: 0
+  };
+}
 
-// function generateBattleData() {
-//   let beatId = generateDepartmentName();
-//   let battleTypeId = new userDepartment(
-//     departmentName,
-//     '41224d776a326fb40f00000' + departments.indexOf(departmentName)
-//   );
-//   return {
-//     startDate: {
-//       $date: '2017-09-02T07:00:00.000Z'
-//     },
-//     endDate: {
-//       $date: '2017-10-01T08:00:00.000Z'
-//     }
-//   };
-// }
+function tearDownDb() {
+  console.warn('Deleting database');
+  return mongoose.connection.dropDatabase();
+}
+
+describe('User API resource', function() {
+  let mockUser;
+  let mockJwt;
+  before(function() {
+    return runServer(TEST_DATABASE_URL);
+  });
+
+  beforeEach(async function() {
+    let users = await seedUserData();
+    mockUser = users[0];
+    mockJwt = createAuthToken(users[0]);
+    return seedUserData();
+  });
+
+  afterEach(function() {
+    return tearDownDb();
+  });
+
+  after(function() {
+    return closeServer();
+  });
+
+  describe('GET endpoint', function() {
+    it('should return all existing users', function() {
+      let res;
+      return chai
+        .request(app)
+        .get('/api/user')
+        .set('Authorization', `Bearer ${mockJwt}`)
+        .then(function(_res) {
+          // so subsequent .then blocks can access resp obj.
+          res = _res;
+          res.should.have.status(200);
+          // otherwise our db seeding didn't work
+          res.body.users.should.have.length.of.at.least(1);
+          return res.body.users.length;
+        })
+        .then(function(count) {
+          res.body.users.should.have.lengthOf(count);
+        });
+    });
+
+    it('should return users with the right fields', function() {
+      let resUser;
+      return chai
+        .request(app)
+        .get('/api/user')
+        .set('Authorization', `Bearer ${mockJwt}`)
+        .then(function(res) {
+          res.should.have.status(200);
+          res.should.be.json;
+          res.body.users.should.be.a('array');
+          res.body.users.should.have.length.of.at.least(1);
+
+          res.body.users.forEach(function(user) {
+            user.should.be.a('object');
+            user.should.include.keys(
+              'id',
+              'name',
+              'battlesEntered',
+              'battlesWon'
+            );
+          });
+          resUser = res.body.users[0];
+          return User.findById(resUser.id);
+        })
+        .then(function(user) {
+          resUser.id.should.equal(user.id);
+          resUser.name.should.equal(user.name);
+          resUser.battlesEntered.should.equal(user.battlesEntered);
+          resUser.battlesWon.should.equal(user.battlesWon);
+        });
+    });
+  });
+});
