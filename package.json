@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "test": "mocha",
     "serverReload": "nodemon --watch app server.js"
   },
   "repository": {
