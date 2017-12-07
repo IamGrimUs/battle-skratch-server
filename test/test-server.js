@@ -14,8 +14,6 @@ const User = require('../app/user/userModel');
 const { TEST_DATABASE_URL } = require('../config');
 const config = require('../config');
 
-// const app = server;
-
 const createAuthToken = user => {
   return jwt.sign({ user }, config.JWT_SECRET, {
     subject: user.name,
