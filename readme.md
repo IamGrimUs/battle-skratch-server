@@ -1,6 +1,6 @@
 # Battle Skratch Server
 
-A node application built to handle api request for the Battle Skratch react web
+A node application built to handle API request for the Battle Skratch react web
 application.
 
 # Getting started
@@ -14,7 +14,7 @@ application.
 
 # Testing
 
-> coming soon
+> npm test
 
 ## Built With
 
@@ -41,4 +41,4 @@ This project is licensed under the MIT License - see the
 ## Acknowledgments
 
 * Doug Mason, Annie Chiang
-* Everyone who hosts Q&A sessions on Thinkul
+* The Thinkful community
